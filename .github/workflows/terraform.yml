@@ -1,5 +1,6 @@
 name: "integration with github"
 on: 
+ pull_request:
  push:
   branches: 
    -terraformInfra_master
