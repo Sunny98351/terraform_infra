@@ -1,38 +1,23 @@
 name: "integration with github"
-on: 
- pull_request:
- push:
-  branches: 
+on: [push,pull_request]
+branches: 
    -terraformInfra_master
 
 jobs:
   terraform:
     name: "terraform init"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./main.tf
     steps:
      - name: "checkout"
        uses: actions/checkout@master
-     - name: "intialize terraform" 
-       uses: hashicorp/terraform-github-actions@master
+     - name: setup terraform
+       uses: hashicorp/setup-terraform@v1
        with:
-         tf_actions_version: 0.12.13
-         tf_actions_subcommand: 'init'
-         tf_actions_working_dir: '.'
-         tf_actions_comment: true
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  terraformvalidate:
-    name: "terraform validate"
-    runs-on: ubuntu-latest
-    steps:
-     - name: "checkout"
-       uses: actions/checkout@master
-     - name: "intialize terraform" 
-       uses: hashicorp/terraform-github-actions@master
-       with:
-         tf_actions_version: 0.12.13
-         tf_actions_subcommand: 'validate'
-         tf_actions_working_dir: '.'
-         tf_actions_comment: true
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}       
+        terraform_version: 1.0.10
+     - name: Terraform Init 
+       id: init
+       run: terraform init
