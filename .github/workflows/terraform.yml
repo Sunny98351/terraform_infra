@@ -1,7 +1,5 @@
 name: "integration with github"
 on: [push,pull_request]
-branches: 
-   -terraformInfra_master
 
 jobs:
   terraform:
